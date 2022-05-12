@@ -1,6 +1,6 @@
 #include "public.h"
 #include "draw.h"
-#include "CreatSudoku.h"
+#include "CreateSudoku.h"
 #include "gotoxy.h"
 #include <iostream>
 
