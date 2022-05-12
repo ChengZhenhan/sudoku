@@ -319,6 +319,12 @@ void CreateSudoku::get_input()
                 return;
             }
         }
+        //esc
+        else if(ch == 27)
+        {
+            cls();
+            return;
+        }
         else
         {
             continue;
