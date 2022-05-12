@@ -1,7 +1,6 @@
 #include "gotoxy.h"
 #if _WIN32
     #include <Windows.h>
-    #include <cstdio>
     void gotoxy(int x, int y)
     {
         COORD coord;

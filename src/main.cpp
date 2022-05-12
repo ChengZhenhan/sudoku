@@ -2,7 +2,7 @@
 #include <cstring>
 #include <cmath>
 #include "draw.h"
-#include "CreatSudoku.h"
+#include "CreateSudoku.h"
 #include "public.h"
 #include "gotoxy.h"
 
@@ -20,21 +20,21 @@ void play()
 	cls();
 	if(level == 1)
 	{
-		CreatSudoku sudoku(20);
+		CreateSudoku sudoku(20);
 		draw d(sudoku.get_board());
 		d.draw_board(0,0);
 		sudoku.get_input();
 	}
 	else if(level == 2)
 	{
-		CreatSudoku sudoku(40);
+		CreateSudoku sudoku(40);
 		draw d(sudoku.get_board());
 		d.draw_board(0,0);
 		sudoku.get_input();
 	}
 	else if(level == 3)
 	{
-		CreatSudoku sudoku(60);
+		CreateSudoku sudoku(60);
 		draw d(sudoku.get_board());
 		d.draw_board(0,0);
 		sudoku.get_input();
@@ -48,7 +48,7 @@ void play()
 void play(const std::string& filename)
 {
 	cls();
-	CreatSudoku sudoku(filename);
+	CreateSudoku sudoku(filename);
 	draw d(sudoku.get_board());
 	d.draw_board(0,0);
 	sudoku.get_input();
