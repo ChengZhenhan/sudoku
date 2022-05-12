@@ -316,14 +316,14 @@ void CreateSudoku::get_input()
                 cls();
                 std::cout << "Success" << std::endl;
                 // while(true){}
-                break;
+                return;
             }
         }
         else
         {
             continue;
         }
-        //将下过的棋子重新渲染
+        //Re render the chess pieces
         // std::stack<Node> temp;
         // temp = s;
         // while(!temp.empty())
@@ -337,7 +337,7 @@ void CreateSudoku::get_input()
             gotoxy(2+4*s.top().x,1+2*s.top().y);
             print_color(2,board[s.top().y][s.top().x]);
         }
-        //渲染指针
+        //Render pointer
         gotoxy(2+4*now.x,2+2*now.y);
         if((now.y + 1) % 3 == 0)
         {
