@@ -2,7 +2,7 @@
 #include <cmath>
 #include "draw.h"
 #include "gotoxy.h"
-#include "public.h"
+#include "Utils.h"
 
 void draw::draw_board(int nx,int ny)
 {

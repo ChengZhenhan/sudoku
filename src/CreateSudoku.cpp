@@ -1,5 +1,5 @@
 #include "CreateSudoku.h"
-#include "public.h"
+#include "Utils.h"
 #include "gotoxy.h"
 #include <fstream>
 #include <iostream>
@@ -11,13 +11,18 @@
 char getch()
 {
     char c;
-    system("stty -echo");
-    c = getchar();
-    system("stty echo");
+    system("stty -echo");  //不回显
+    system("stty -icanon");//设置一次性读完操作，如使用getchar()读操作，不需要按enter
+    c=getchar();
+    system("stty icanon");//取消上面的设置
+    system("stty echo");//回显
     return c;
 }
 #endif
 #include <time.h>
+
+#define GetX(x) (2+4*x)
+#define GetY(y) (1+2*y)
 
 void CreateSudoku::load(const std::string& filename)
 {
@@ -163,40 +168,34 @@ void CreateSudoku::get_input()
     while(true)
     {
         char ch = getch();
-        if(ch == 'q' || ch == 'Q')
-        {
+        if(ch == 'q' || ch == 'Q') {
             exit(0);
         }
-        else if(ch == 'w' || ch == 'w')
-        {
+        else if(ch == 'w' || ch == 'w') {
             if(y>0)
             {
                 y--;
             }
         }
-        else if(ch == 's' || ch == 'S')
-        {
+        else if(ch == 's' || ch == 'S') {
             if(y<8)
             {
                 y++;
             }
         }
-        else if(ch == 'a' || ch == 'A')
-        {
+        else if(ch == 'a' || ch == 'A') {
             if(x>0)
             {
                 x--;
             }
         }
-        else if(ch == 'd' || ch == 'D')
-        {
+        else if(ch == 'd' || ch == 'D') {
             if(x<8)
             {
                 x++;
             }
         }
-        else if(ch == 'b' || ch == 'B')
-        {
+        else if(ch == 'b' || ch == 'B') {
             if(!s.empty())
             {
                 gotoxy(2+4*s.top().x,1+2*s.top().y);
@@ -209,99 +208,10 @@ void CreateSudoku::get_input()
                 s.pop();
             }
         }
-        else if(ch == '1')
-        {
+        else if(ch >= '1' && ch <= '9') {
             if(board[y][x] == 0 || checkput(x,y))
             {
-                board[y][x] = 1;
-                Node node;
-                node.x = x;
-                node.y = y;
-                s.push(node);
-            }
-        }
-        else if(ch == '2')
-        {
-            if(board[y][x] == 0 || checkput(x,y))
-            {
-                board[y][x] = 2;
-                Node node;
-                node.x = x;
-                node.y = y;
-                s.push(node);
-            }
-        }
-        else if(ch == '3')
-        {
-            if(board[y][x] == 0 || checkput(x,y))
-            {
-                board[y][x] = 3;
-                Node node;
-                node.x = x;
-                node.y = y;
-                s.push(node);
-            }
-        }
-        else if(ch == '4')
-        {
-            if(board[y][x] == 0 || checkput(x,y))
-            {
-                board[y][x] = 4;
-                Node node;
-                node.x = x;
-                node.y = y;
-                s.push(node);
-            }
-        }
-        else if(ch == '5')
-        {
-            if(board[y][x] == 0 || checkput(x,y))
-            {
-                board[y][x] = 5;
-                Node node;
-                node.x = x;
-                node.y = y;
-                s.push(node);
-            }
-        }
-        else if(ch == '6')
-        {
-            if(board[y][x] == 0 || checkput(x,y))
-            {
-                board[y][x] = 6;
-                Node node;
-                node.x = x;
-                node.y = y;
-                s.push(node);
-            }
-        }
-        else if(ch == '7')
-        {
-            if(board[y][x] == 0 || checkput(x,y))
-            {
-                board[y][x] = 7;
-                Node node;
-                node.x = x;
-                node.y = y;
-                s.push(node);
-            }
-        }
-        else if(ch == '8')
-        {
-            if(board[y][x] == 0 || checkput(x,y))
-            {
-                board[y][x] = 8;
-                Node node;
-                node.x = x;
-                node.y = y;
-                s.push(node);
-            }
-        }
-        else if(ch == '9')
-        {
-            if(board[y][x] == 0 || checkput(x,y))
-            {
-                board[y][x] = 9;
+                board[y][x] = ch - '0';
                 Node node;
                 node.x = x;
                 node.y = y;
@@ -309,8 +219,7 @@ void CreateSudoku::get_input()
             }
         }
         //enter
-        else if(ch == '\r')
-        {
+        else if(ch == '\r') {
             if(judge())
             {
                 cls();
@@ -320,16 +229,14 @@ void CreateSudoku::get_input()
             }
         }
         //esc
-        else if(ch == 27)
-        {
+        else if(ch == 27) {
             cls();
             return;
         }
-        else
-        {
+        else {
             continue;
         }
-        //Re render the chess pieces
+        // Render the chess pieces
         // std::stack<Node> temp;
         // temp = s;
         // while(!temp.empty())
@@ -338,19 +245,16 @@ void CreateSudoku::get_input()
         //     print_color(4,board[temp.top().y][temp.top().x]);
         //     temp.pop();
         // }
-        if(!s.empty())
-        {
-            gotoxy(2+4*s.top().x,1+2*s.top().y);
+        if(!s.empty()) {
+            gotoxy(GetX(s.top().x),GetY(s.top().y));
             print_color(2,board[s.top().y][s.top().x]);
         }
-        //Render pointer
-        gotoxy(2+4*now.x,2+2*now.y);
-        if((now.y + 1) % 3 == 0)
-        {
+        // Render pointer
+        gotoxy(GetX(now.x), 1+GetY(now.y)); // gotoxy(2+4*now.x,2+2*now.y);
+        if((now.y + 1) % 3 == 0) {
             print_color(1,"━");
         }
-        else
-        {
+        else {
             print_color(0,"━");
         }
         std::stack<Node> temp;
@@ -360,21 +264,20 @@ void CreateSudoku::get_input()
         {
             if(temp.top().x == now.x && temp.top().y == now.y)
             {
-                gotoxy(2+4*now.x,1+2*now.y);
+                gotoxy(GetX(now.x),GetY(now.y));
                 print_color(2,board[now.y][now.x]);
                 flag = true;
                 break;
             }
             temp.pop();
         }
-        if(!flag)
-        {
-            gotoxy(2+4*now.x,1+2*now.y);
+        if(!flag) {
+            gotoxy(GetX(now.x),GetY(now.y));
             print_color(0,board[now.y][now.x]);
         }
-        gotoxy(2+4*x,1+2*y);
+        gotoxy(GetX(x),GetY(y));
         print_color(4,board[y][x]);
-        gotoxy(2+4*x,2+2*y);
+        gotoxy(GetX(x),1+GetY(y));
         print_color(2,"^");
         now.x = x;
         now.y = y;//update now
