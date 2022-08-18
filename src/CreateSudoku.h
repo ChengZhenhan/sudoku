@@ -6,7 +6,7 @@
 #include <time.h>
 #include <cstring>
 #include <stack>
-#include "public.h"
+#include "Utils.h"
 
 class CreateSudoku
 {
