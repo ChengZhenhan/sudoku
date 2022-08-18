@@ -1,6 +1,5 @@
 #include "CreateSudoku.h"
 #include "Utils.h"
-#include "gotoxy.h"
 #include <fstream>
 #include <iostream>
 #include <cstring>
@@ -21,9 +20,13 @@ char getch()
 #endif
 #include <time.h>
 
+#if _WIN32
 #define GetX(x) (2+4*x)
 #define GetY(y) (1+2*y)
-
+#else
+#define GetX(x) (3+4*x)
+#define GetY(y) (2+2*y)
+#endif
 void CreateSudoku::load(const std::string& filename)
 {
     std::ifstream in(filename);

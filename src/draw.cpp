@@ -1,7 +1,6 @@
 #include <cstring>
 #include <cmath>
 #include "draw.h"
-#include "gotoxy.h"
 #include "Utils.h"
 
 void draw::draw_board(int nx,int ny)

@@ -3,8 +3,6 @@
 #include <cmath>
 #include "draw.h"
 #include "CreateSudoku.h"
-#include "public.h"
-#include "gotoxy.h"
 
 void play()
 {
