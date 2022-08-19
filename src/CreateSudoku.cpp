@@ -77,44 +77,33 @@ void CreateSudoku::turnrow(int row1, int row2)
     }
 }
 
-void CreateSudoku::turncol(int col1, int col2)
-{
+void CreateSudoku::turncol(int col1, int col2) {
     int temp = 0;
-    for(int i = 0;i < 9;i++)
-    {
+    for(int i = 0;i < 9;i++) {
         temp = board[i][col1];
         board[i][col1] = board[i][col2];
         board[i][col2] = temp;
     }
 }
-bool CreateSudoku::judge()
-{
+bool CreateSudoku::judge() {
     bool t[9] = {false};
-    for(int i = 0;i < 9;i++)
-    {
-        for(int j = 0;j < 9;j++)
-        {
+    for(int i = 0;i < 9;i++) {
+        for(int j = 0;j < 9;j++) {
             t[board[i][j] - 1] = true;
         }
-        for(int j = 0;j < 9;j++)
-        {
-            if(!t[j])
-            {
+        for(int j = 0;j < 9;j++) {
+            if(!t[j]) {
                 return false;
             }
             t[j] = false;
         }
     }
-    for(int i = 0;i < 9;i++)
-    {
-        for(int j = 0;j < 9;j++)
-        {
+    for(int i = 0;i < 9;i++) {
+        for(int j = 0;j < 9;j++) {
             t[board[j][i] - 1] = true;
         }
-        for(int j = 0;j < 9;j++)
-        {
-            if(!t[j])
-            {
+        for(int j = 0;j < 9;j++) {
+            if(!t[j]) {
                 return false;
             }
             t[j] = false;
@@ -122,18 +111,13 @@ bool CreateSudoku::judge()
     }
     int x[3] = {0,3,6};
     int y[3] = {0,3,6};
-    for(int i = 0;i < 3;i++)
-    {
-        for(int j = 0;j < 3;j++)
-        {
-            for(int k = 0;k < 9;k++)
-            {
+    for(int i = 0;i < 3;i++) {
+        for(int j = 0;j < 3;j++) {
+            for(int k = 0;k < 9;k++) {
                 t[board[x[i] + k/3][y[j] + k%3] - 1] = true;
-            }   
-            for(int k = 0;k < 9;k++)
-            {
-                if(!t[k])
-                {
+            }
+            for(int k = 0;k < 9;k++) {
+                if(!t[k]) {
                     return false;
                 }
                 t[k] = false;
@@ -143,18 +127,15 @@ bool CreateSudoku::judge()
     return true;
 }
 
-bool CreateSudoku::checkput(int x,int y){
+bool CreateSudoku::checkput(int x,int y) {
     //check if the number is valid
     std::stack<Node> temp;
     temp = s;
-    if(temp.empty())
-    {
+    if(temp.empty()) {
         return true;
     }
-    while(!temp.empty())
-    {
-        if(temp.top().x == x && temp.top().y == y)
-        {
+    while(!temp.empty()) {
+        if(temp.top().x == x && temp.top().y == y) {
             return true;
         }
         temp.pop();
@@ -162,9 +143,8 @@ bool CreateSudoku::checkput(int x,int y){
     return false;
 }
 
-void CreateSudoku::get_input()
-{
-    gotoxy(2+4*now.x,2+2*now.y);
+void CreateSudoku::get_input() {
+    gotoxy(GetX(now.x),1+GetY(now.y));
     print_color(2,"^");
     int x = 0;
     int y = 0;
@@ -201,7 +181,7 @@ void CreateSudoku::get_input()
         else if(ch == 'b' || ch == 'B') {
             if(!s.empty())
             {
-                gotoxy(2+4*s.top().x,1+2*s.top().y);
+                gotoxy(GetX(s.top().x),GetY(s.top().y));
                 // if(s.top().x==now.x && s.top().y==now.y)
                 // {
                 //     print_color(4,"0");
@@ -223,8 +203,7 @@ void CreateSudoku::get_input()
         }
         //enter
         else if(ch == '\r') {
-            if(judge())
-            {
+            if(judge()) {
                 cls();
                 std::cout << "Success" << std::endl;
                 // while(true){}
@@ -263,10 +242,8 @@ void CreateSudoku::get_input()
         std::stack<Node> temp;
         temp = s;
         bool flag = false;
-        while(!temp.empty())
-        {
-            if(temp.top().x == now.x && temp.top().y == now.y)
-            {
+        while(!temp.empty()) {
+            if(temp.top().x == now.x && temp.top().y == now.y) {
                 gotoxy(GetX(now.x),GetY(now.y));
                 print_color(2,board[now.y][now.x]);
                 flag = true;
