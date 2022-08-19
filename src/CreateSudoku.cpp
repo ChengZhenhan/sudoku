@@ -148,39 +148,33 @@ void CreateSudoku::get_input() {
     print_color(2,"^");
     int x = 0;
     int y = 0;
-    while(true)
-    {
+    while(true) {
         char ch = getch();
         if(ch == 'q' || ch == 'Q') {
             exit(0);
         }
         else if(ch == 'w' || ch == 'w') {
-            if(y>0)
-            {
+            if(y>0) {
                 y--;
             }
         }
         else if(ch == 's' || ch == 'S') {
-            if(y<8)
-            {
+            if(y<8) {
                 y++;
             }
         }
         else if(ch == 'a' || ch == 'A') {
-            if(x>0)
-            {
+            if(x>0) {
                 x--;
             }
         }
         else if(ch == 'd' || ch == 'D') {
-            if(x<8)
-            {
+            if(x<8) {
                 x++;
             }
         }
         else if(ch == 'b' || ch == 'B') {
-            if(!s.empty())
-            {
+            if(!s.empty()) {
                 gotoxy(GetX(s.top().x),GetY(s.top().y));
                 // if(s.top().x==now.x && s.top().y==now.y)
                 // {
@@ -192,8 +186,7 @@ void CreateSudoku::get_input() {
             }
         }
         else if(ch >= '1' && ch <= '9') {
-            if(board[y][x] == 0 || checkput(x,y))
-            {
+            if(board[y][x] == 0 || checkput(x,y)) {
                 board[y][x] = ch - '0';
                 Node node;
                 node.x = x;
