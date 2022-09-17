@@ -4,8 +4,7 @@
 #include "draw.h"
 #include "CreateSudoku.h"
 
-void play()
-{
+void play() {
 	cls();
 
 	// clock_t startTime,endTime;
@@ -16,23 +15,9 @@ void play()
 	int level = 0;
 	std::cin >> level;
 	cls();
-	if(level == 1)
+	if(level >= 1 && level <= 3)
 	{
-		CreateSudoku sudoku(20);
-		draw d(sudoku.get_board());
-		d.draw_board(0,0);
-		sudoku.get_input();
-	}
-	else if(level == 2)
-	{
-		CreateSudoku sudoku(40);
-		draw d(sudoku.get_board());
-		d.draw_board(0,0);
-		sudoku.get_input();
-	}
-	else if(level == 3)
-	{
-		CreateSudoku sudoku(60);
+		CreateSudoku sudoku(20 * level);
 		draw d(sudoku.get_board());
 		d.draw_board(0,0);
 		sudoku.get_input();
@@ -43,40 +28,34 @@ void play()
 		goto s;
 	}
 }
-void play(const std::string& filename)
-{
+void play(const std::string& filename) {
 	cls();
 	CreateSudoku sudoku(filename);
 	draw d(sudoku.get_board());
 	d.draw_board(0,0);
 	sudoku.get_input();
 }
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
 #ifdef _WIN32
 	system("chcp 65001");
 #endif
 	m:
-	if(argc == 1)
-	{
+	if(argc == 1) {
 		play();
 	}
-	else if(argc == 2 && !strcmp(argv[1], "-h"))
-	{
+	else if(argc == 2 && !strcmp(argv[1], "-h")) {
 		std::cout << "Usage: ./Sudoku [filename]" << std::endl;
 		std::cout << "If no filename is given, the game will start automatically." << std::endl;
 		goto m;
 	}
-	else if(argc == 2)
-	{
+	else if(argc == 2) {
 		play(argv[2]);
 	}
-	else
-	{
+	else {
 		std::cout << "Usage: ./Sudoku [filename]" << std::endl;
 		std::cout << "If no filename is given, the game will start automatically." << std::endl;
 		goto m;
 	}
-	while(true);
+	while(true){}
     return 0;
 }
