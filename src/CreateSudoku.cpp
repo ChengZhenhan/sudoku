@@ -14,18 +14,14 @@
 #define GetX(x) (3+4*x)
 #define GetY(y) (2+2*y)
 #endif
-void CreateSudoku::load(const std::string& filename)
-{
+void CreateSudoku::load(const std::string& filename) {
     std::ifstream in(filename);
-    if(!in.is_open())
-    {
+    if(!in.is_open()) {
         print_color(1,"ERROR:File opening failed!");
         return;
     }
-    for(int i = 0;i < 9;i++)
-    {
-        for(int j = 0;j < 9;j++)
-        {
+    for(int i = 0;i < 9;i++) {
+        for(int j = 0;j < 9;j++) {
             in >> board[i][j];
         }
     }
@@ -33,18 +29,14 @@ void CreateSudoku::load(const std::string& filename)
     in.close();
 }
 
-void CreateSudoku::save(const std::string& filename)
-{
+void CreateSudoku::save(const std::string& filename) {
     std::ofstream out(filename);
-    if(!out.is_open())
-    {
+    if(!out.is_open()) {
         print_color(1,"ERROR:File opening failed!");
         return;
     }
-    for(int i = 0;i < 9;i++)
-    {
-        for(int j = 0;j < 9;j++)
-        {
+    for(int i = 0;i < 9;i++) {
+        for(int j = 0;j < 9;j++) {
             out << board[i][j] << " ";
         }
         out << std::endl;
@@ -53,11 +45,9 @@ void CreateSudoku::save(const std::string& filename)
 }
 
 //It can also be exchanged by addition and subtraction
-void CreateSudoku::turnrow(int row1, int row2)
-{
+void CreateSudoku::turnrow(int row1, int row2) {
     int temp = 0;
-    for(int i = 0;i < 9;i++)
-    {
+    for(int i = 0;i < 9;i++) {
         temp = board[row1][i];
         board[row1][i] = board[row2][i];
         board[row2][i] = temp;
@@ -119,7 +109,7 @@ bool CreateSudoku::checkput(int x,int y) {
     std::stack<Node> temp;
     temp = s;
     if(temp.empty()) {
-        return true;
+        return board[y][x] == 0;
     }
     while(!temp.empty()) {
         if(temp.top().x == x && temp.top().y == y) {
@@ -141,17 +131,18 @@ void CreateSudoku::get_input() {
     // #endif
     while(true) {
         char ch = '\0';
-        #if _WIN32
-            // if (_kbhit()) {
-            //     ch = _getch();
-            // }
-            ch = getch();
-        #else
-            // if (lread.kbhit()) {
-            //     ch = lread.readch();
-            // }
-            ch = getch();
-        #endif
+        // #if _WIN32
+        //     // if (_kbhit()) {
+        //     //     ch = _getch();
+        //     // }
+        //     ch = getch();
+        // #else
+        //     // if (lread.kbhit()) {
+        //     //     ch = lread.readch();
+        //     // }
+        //     ch = getch();
+        // #endif
+        ch = getch();
         bool out = false;
         switch (ch) {
         case 'Q': case 'q': exit(0);
