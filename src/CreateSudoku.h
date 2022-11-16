@@ -80,17 +80,13 @@ public:
     void get_input();
     bool checkput(int x, int y);
     //get_board
-    int** get_board()
-    {
+    int** get_board() {
         int **p = new int*[9];
-        for(int i = 0;i < 9;i++)
-        {
+        for(int i = 0;i < 9;i++) {
             p[i] = new int[9];
         }
-        for(int i = 0;i < 9;i++)
-        {
-            for(int j = 0;j < 9;j++)
-            {
+        for(int i = 0;i < 9;i++) {
+            for(int j = 0;j < 9;j++) {
                 p[i][j] = board[i][j];
             }
         }
