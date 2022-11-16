@@ -30,17 +30,14 @@ private:
     int n = 0;  //Number of steps
 public:
     bool flag = false;  //If the board is filled in correctly
-    CreateSudoku(int difficulty)
-    {
+    CreateSudoku(int difficulty) {
         srand(time(NULL));
         int i = rand()%99 + 15;
         int j = rand()%99 + 15;
         int rand1;
         int rand2;
-        for(int k = 0;k < i;k++)
-        {
-            for(int l = 0;l < j;l++)
-            {
+        for(int k = 0;k < i;k++) {
+            for(int l = 0;l < j;l++) {
                 rand1 = (rand()%3 + 1)*(rand()%3 + 1) - 1;
                 rand2 = rand1/3*3 + rand() % 3;
                 turnrow(rand1,rand2);
@@ -51,28 +48,23 @@ public:
                 turnrow(rand1,rand2);
             }
         }
-        for(int k = 0;k < difficulty;k++)
-        {
+        for(int k = 0;k < difficulty;k++) {
             int a = rand()%9;
             int b = rand()%9;
-            if(board[a][b] != 0)
-            {
+            if(board[a][b] != 0) {
                 board[a][b] = 0;
             }
-            else
-            {
+            else {
                 k--;
             }
         }
     }
 
-    CreateSudoku(const std::string& filename)
-    {
+    CreateSudoku(const std::string& filename) {
         load(filename);
     }
 
-    ~CreateSudoku()
-    {
+    ~CreateSudoku() {
         cls();
         std::string filename;
         std::cout << "Please input the filename: ";

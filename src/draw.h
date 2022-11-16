@@ -7,11 +7,12 @@
 class draw
 {
 private:
-	int board[9][9] = {0};
+	int board[9][9];
 public:
 	void draw_board(int nx,int ny);
 	draw(int **board)
 	{
+		memset(this->board, 0, sizeof(this->board));
 		for(int i = 0;i < 9;i++)
 		{
 			for(int j = 0;j < 9;j++)

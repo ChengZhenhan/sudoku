@@ -3,6 +3,7 @@
 #include <cmath>
 #include "draw.h"
 #include "CreateSudoku.h"
+#include "Utils.h"
 
 void play() {
 	cls();
@@ -46,7 +47,7 @@ int main(int argc, char *argv[]) {
 	else if(argc == 2 && !strcmp(argv[1], "-h")) {
 		std::cout << "Usage: ./Sudoku [filename]" << std::endl;
 		std::cout << "If no filename is given, the game will start automatically." << std::endl;
-		goto m;
+		return 0;
 	}
 	else if(argc == 2) {
 		play(argv[2]);

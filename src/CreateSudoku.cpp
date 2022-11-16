@@ -4,20 +4,7 @@
 #include <iostream>
 #include <cstring>
 #include <stack>
-#if _WIN32
-#include <conio.h>
-#else
-char getch()
-{
-    char c;
-    system("stty -echo");  //不回显
-    system("stty -icanon");//设置一次性读完操作，如使用getchar()读操作，不需要按enter
-    c=getchar();
-    system("stty icanon");//取消上面的设置
-    system("stty echo");//回显
-    return c;
-}
-#endif
+#include <string>
 #include <time.h>
 
 #if _WIN32
@@ -148,69 +135,54 @@ void CreateSudoku::get_input() {
     print_color(2,"^");
     int x = 0;
     int y = 0;
+    // #if !(_WIN32)
+    //     linuxRead::linuxRead lread;
+    //     lread.init_keyboard();
+    // #endif
     while(true) {
-        char ch = getch();
-        if(ch == 'q' || ch == 'Q') {
-            exit(0);
+        char ch = '\0';
+        #if _WIN32
+            // if (_kbhit()) {
+            //     ch = _getch();
+            // }
+            ch = getch();
+        #else
+            // if (lread.kbhit()) {
+            //     ch = lread.readch();
+            // }
+            ch = getch();
+        #endif
+        bool out = false;
+        switch (ch) {
+        case 'Q': case 'q': exit(0);
+        case 'w': case 'W': if(y>0) { y--; } break;
+        case 's': case 'S': if(y<8) { y++; } break;
+        case 'a': case 'A': if(x>0) { x--; } break;
+        case 'd': case 'D': if(x<8) { x++; } break;
+        case 'b': case 'B': 
+        if(!s.empty()) {
+            gotoxy(GetX(s.top().x),GetY(s.top().y));
+            print_color(4,"0");
+            board[s.top().y][s.top().x] = 0;
+            s.pop();
         }
-        else if(ch == 'w' || ch == 'w') {
-            if(y>0) {
-                y--;
-            }
+        break;
+        case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+        if(board[y][x] == 0 || checkput(x,y)) {
+            board[y][x] = ch - '0';
+            Node node;
+            node.x = x;
+            node.y = y;
+            s.push(node);
         }
-        else if(ch == 's' || ch == 'S') {
-            if(y<8) {
-                y++;
-            }
+        break;
+        case '\r': if(judge()) { cls(); std::cout << "Success" << std::endl; return; } break;
+        case 27: cls(); return;
+        default:
+            out = true;
+            break;
         }
-        else if(ch == 'a' || ch == 'A') {
-            if(x>0) {
-                x--;
-            }
-        }
-        else if(ch == 'd' || ch == 'D') {
-            if(x<8) {
-                x++;
-            }
-        }
-        else if(ch == 'b' || ch == 'B') {
-            if(!s.empty()) {
-                gotoxy(GetX(s.top().x),GetY(s.top().y));
-                // if(s.top().x==now.x && s.top().y==now.y)
-                // {
-                //     print_color(4,"0");
-                // }
-                print_color(4,"0");
-                board[s.top().y][s.top().x] = 0;
-                s.pop();
-            }
-        }
-        else if(ch >= '1' && ch <= '9') {
-            if(board[y][x] == 0 || checkput(x,y)) {
-                board[y][x] = ch - '0';
-                Node node;
-                node.x = x;
-                node.y = y;
-                s.push(node);
-            }
-        }
-        //enter
-        else if(ch == '\r') {
-            if(judge()) {
-                cls();
-                std::cout << "Success" << std::endl;
-                // while(true){}
-                return;
-            }
-        }
-        //esc
-        else if(ch == 27) {
-            cls();
-            return;
-        }
-        else {
-            continue;
-        }
+        if(out) {out = false; continue;}
         // Render the chess pieces
         // std::stack<Node> temp;
         // temp = s;
