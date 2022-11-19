@@ -1,4 +1,4 @@
-# sudoku
+# Sudoku
 A simple Sudoku game
 
 ## Characteristic
