@@ -1,7 +1,0 @@
-bin
-build
-.vscode
-.DS_Store
-.cache
-Thumbs.db
-checks.json
