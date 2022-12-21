@@ -13,18 +13,20 @@ else()
     message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 
 endif()
-# SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-# SET(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic")
-SET(CMAKE_BUILD_TYPE "Debug")
 
+SET(CMAKE_BUILD_TYPE "Debug")
 SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")
 SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
-
-
 SET(EXECUTABLE_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/bin")
-
 AUX_SOURCE_DIRECTORY(src DIR_SRCS)
 
 add_executable(sudoku
    ${DIR_SRCS}
 )
+
+enable_testing()
+add_executable(getErrortest ${PROJECT_SOURCE_DIR}/test/getErrortest.cpp ${PROJECT_SOURCE_DIR}/src/CreateSudoku.h ${PROJECT_SOURCE_DIR}/src/CreateSudoku.cpp ${PROJECT_SOURCE_DIR}/src/Utils.h ${PROJECT_SOURCE_DIR}/src/Utils.cpp)
+add_executable(judgetest ${PROJECT_SOURCE_DIR}/test/judgetest.cpp ${PROJECT_SOURCE_DIR}/src/CreateSudoku.h ${PROJECT_SOURCE_DIR}/src/CreateSudoku.cpp ${PROJECT_SOURCE_DIR}/src/Utils.h ${PROJECT_SOURCE_DIR}/src/Utils.cpp)
+
+add_test( NAME getErrortest COMMAND getErrortest)
+add_test( NAME judgetest COMMAND judgetest)

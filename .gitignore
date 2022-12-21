@@ -1,6 +1,8 @@
 bin
 build
 .vscode
+.idea
+cmake-build-debug
 .DS_Store
 .cache
 Thumbs.db

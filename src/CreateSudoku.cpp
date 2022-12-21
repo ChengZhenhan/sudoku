@@ -6,6 +6,7 @@
 #include <stack>
 #include <string>
 #include <time.h>
+#include <map>
 
 #if _WIN32
 #define GetX(x) (2+4*x)
@@ -23,9 +24,11 @@ void CreateSudoku::load(const std::string& filename) {
     for(int i = 0;i < 9;i++) {
         for(int j = 0;j < 9;j++) {
             in >> board[i][j];
+            if (board[i][j] == 0) {
+                zero++;
+            }
         }
     }
-    in >> n;
     in.close();
 }
 
@@ -63,10 +66,10 @@ void CreateSudoku::turncol(int col1, int col2) {
     }
 }
 bool CreateSudoku::judge() {
-    bool t[9] = {false};
+    bool t[10] = {false};
     for(int i = 0;i < 9;i++) {
         for(int j = 0;j < 9;j++) {
-            t[board[i][j] - 1] = true;
+            t[board[i][j]] = true;
         }
         for(int j = 0;j < 9;j++) {
             if(!t[j]) {
@@ -77,7 +80,7 @@ bool CreateSudoku::judge() {
     }
     for(int i = 0;i < 9;i++) {
         for(int j = 0;j < 9;j++) {
-            t[board[j][i] - 1] = true;
+            t[board[j][i]] = true;
         }
         for(int j = 0;j < 9;j++) {
             if(!t[j]) {
@@ -91,7 +94,7 @@ bool CreateSudoku::judge() {
     for(int i = 0;i < 3;i++) {
         for(int j = 0;j < 3;j++) {
             for(int k = 0;k < 9;k++) {
-                t[board[x[i] + k/3][y[j] + k%3] - 1] = true;
+                t[board[x[i] + k/3][y[j] + k%3]] = true;
             }
             for(int k = 0;k < 9;k++) {
                 if(!t[k]) {
@@ -125,6 +128,7 @@ void CreateSudoku::get_input() {
     print_color(2,"^");
     int x = 0;
     int y = 0;
+    std::map<std::pair<int, int>, bool> red;
     // #if !(_WIN32)
     //     linuxRead::linuxRead lread;
     //     lread.init_keyboard();
@@ -167,7 +171,15 @@ void CreateSudoku::get_input() {
             s.push(node);
         }
         break;
-        case '\r': if(judge()) { cls(); std::cout << "Success" << std::endl; return; } break;
+        case '\r':
+            if(judge()) {
+                cls();
+                std::cout << "Success" << std::endl;
+                return;
+            } else {
+                red = getError();
+            }
+            break;
         case 27: cls(); return;
         default:
             out = true;
@@ -188,7 +200,7 @@ void CreateSudoku::get_input() {
             print_color(2,board[s.top().y][s.top().x]);
         }
         // Render pointer
-        gotoxy(GetX(now.x), 1+GetY(now.y)); // gotoxy(2+4*now.x,2+2*now.y);
+        gotoxy(GetX(now.x), 1+GetY(now.y));
         if((now.y + 1) % 3 == 0) {
             print_color(1,"━");
         }
@@ -211,11 +223,68 @@ void CreateSudoku::get_input() {
             gotoxy(GetX(now.x),GetY(now.y));
             print_color(0,board[now.y][now.x]);
         }
+        // Highlight the wrong answers
+        if (!red.empty()) {
+            std::map<std::pair<int, int>, bool> ::iterator it;
+            std::map<std::pair<int, int>, bool> ::iterator itEnd;
+            it = red.begin();
+            itEnd = red.end();
+            while (it != itEnd) {
+                gotoxy(GetX(it->first.first),GetY(it->first.second));
+                print_color(1,board[it->first.first][it->first.second]);
+                it++;
+            }
+            red.clear();
+        }
+        // Describe current position
         gotoxy(GetX(x),GetY(y));
         print_color(4,board[y][x]);
         gotoxy(GetX(x),1+GetY(y));
         print_color(2,"^");
         now.x = x;
-        now.y = y;//update now
+        now.y = y;//update "now"
     }
+}
+
+std::map<std::pair<int, int>, bool> CreateSudoku::getError() {
+    std::map<std::pair<int,int>, bool> red;
+    int t[10] = {0};
+    for(int i = 0;i < 9;i++) {
+        for(int j = 0;j < 9;j++) {
+            t[board[i][j]]++;
+        }
+        for(int j = 0;j < 9;j++) {
+            if (t[board[i][j]] > 1) {
+                red.insert(std::pair<std::pair<int, int>, bool>(std::pair<int, int>(i, j), true));
+            }
+        }
+        memset(t, 0, sizeof (t));
+    }
+    for(int i = 0;i < 9;i++) {
+        for(int j = 0;j < 9;j++) {
+            t[board[j][i]]++;
+        }
+        for(int j = 0;j < 9;j++) {
+            if (t[board[j][i]] > 1) {
+                red.insert(std::pair<std::pair<int, int>, bool>(std::pair<int, int>(j, i), true));
+            }
+        }
+        memset(t, 0, sizeof (t));
+    }
+    int x[3] = {0,3,6};
+    int y[3] = {0,3,6};
+    for(int i = 0;i < 3;i++) {
+        for(int j = 0;j < 3;j++) {
+            for(int k = 0;k < 9;k++) {
+                t[board[x[i] + k/3][y[j] + k%3]]++;
+            }
+            for(int k = 0;k < 9;k++) {
+                if (t[board[x[i] + k/3][y[i] + k%3]] > 1) {
+                    red.insert(std::pair<std::pair<int, int>, bool>(std::pair<int, int>(x[i] + k/3, y[i] + k%3), true));
+                }
+            }
+            memset(t, 0, sizeof (t));
+        }
+    }
+    return red;
 }
