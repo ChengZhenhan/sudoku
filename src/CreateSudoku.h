@@ -7,6 +7,7 @@
 #include <iostream>
 #include <stack>
 #include <time.h>
+#include <map>
 
 class CreateSudoku {
 private:
@@ -26,11 +27,18 @@ private:
     } Node;
     Node now;
     std::stack<Node> s;
-    int n = 0; // Number of steps
+    int zero = 0; // Number of steps
+    struct History {
+        int x,y;
+        int num;
+//        int type;
+//        int change;
+    };
 public:
-    bool flag = false; // If the board is filled in correctly
+    bool test = false;
     CreateSudoku(int difficulty)
     {
+        zero = difficulty;
         srand(time(NULL));
         int i = rand() % 99 + 15;
         int j = rand() % 99 + 15;
@@ -66,11 +74,12 @@ public:
 
     ~CreateSudoku()
     {
-        cls();
-        std::string filename;
-        std::cout << "Please input the filename: ";
-        std::cin >> filename;
-        save(filename);
+        if (!test) {
+            std::string filename;
+            std::cout << "Please input the filename: ";
+            std::cin >> filename;
+            save(filename);
+        }
     }
 
     void load(const std::string &filename);
@@ -80,9 +89,9 @@ public:
     bool judge();
     void get_input();
     bool checkput(int x, int y);
+    std::map<std::pair<int,int>,bool> getError();
     // get_board
-    int **get_board()
-    {
+    int **get_board() {
         int **p = new int *[9];
         for (int i = 0; i < 9; i++) {
             p[i] = new int[9];
@@ -93,6 +102,14 @@ public:
             }
         }
         return p;
+    }
+
+    void set_board(int **b) {
+        for (int i = 0; i < 9; ++i) {
+            for (int j = 0; j < 9; ++j) {
+                board[i][j] = b[i][j];
+            }
+        }
     }
 };
 
