@@ -69,6 +69,7 @@ public:
 
     CreateSudoku(const std::string &filename)
     {
+        memset(board, 0 ,sizeof(board));
         load(filename);
     }
 

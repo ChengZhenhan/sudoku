@@ -4,9 +4,16 @@
 #include "../src/CreateSudoku.h"
 
 int main(int argc, char const *argv[]) {
-    CreateSudoku sudoku("./test.txt");
+    CreateSudoku sudoku(argv[0]);
     sudoku.test = true;
-    if (!sudoku.judge()) {
+    bool ans;
+    if (strcmp(argv[1],"1") == 0) {
+        ans = true;
+    } else {
+        ans = false;
+    }
+    
+    if (sudoku.judge() == ans) {
     //  std::cout << "pass" << std::endl;
         return 0;
     } else {

@@ -71,7 +71,7 @@ bool CreateSudoku::judge() {
         for(int j = 0;j < 9;j++) {
             t[board[i][j]] = true;
         }
-        for(int j = 0;j < 9;j++) {
+        for(int j = 1;j <= 9;j++) {
             if(!t[j]) {
                 return false;
             }
@@ -82,7 +82,7 @@ bool CreateSudoku::judge() {
         for(int j = 0;j < 9;j++) {
             t[board[j][i]] = true;
         }
-        for(int j = 0;j < 9;j++) {
+        for(int j = 1;j <= 9;j++) {
             if(!t[j]) {
                 return false;
             }
@@ -231,7 +231,8 @@ void CreateSudoku::get_input() {
             itEnd = red.end();
             while (it != itEnd) {
                 gotoxy(GetX(it->first.first),GetY(it->first.second));
-                print_color(1,board[it->first.first][it->first.second]);
+                // print_color(1,board[it->first.first][it->first.second]);
+                print_color(1,board[it->first.second][it->first.first]);
                 it++;
             }
             red.clear();
@@ -254,7 +255,7 @@ std::map<std::pair<int, int>, bool> CreateSudoku::getError() {
             t[board[i][j]]++;
         }
         for(int j = 0;j < 9;j++) {
-            if (t[board[i][j]] > 1) {
+            if (t[board[i][j]] > 1 || (t[board[i][j]] == 1 && board[i][j] == 0)) {
                 red.insert(std::pair<std::pair<int, int>, bool>(std::pair<int, int>(i, j), true));
             }
         }
@@ -265,7 +266,7 @@ std::map<std::pair<int, int>, bool> CreateSudoku::getError() {
             t[board[j][i]]++;
         }
         for(int j = 0;j < 9;j++) {
-            if (t[board[j][i]] > 1) {
+            if (t[board[j][i]] > 1 || (t[board[j][i]] == 1 && board[j][i] == 0)) {
                 red.insert(std::pair<std::pair<int, int>, bool>(std::pair<int, int>(j, i), true));
             }
         }
@@ -279,8 +280,8 @@ std::map<std::pair<int, int>, bool> CreateSudoku::getError() {
                 t[board[x[i] + k/3][y[j] + k%3]]++;
             }
             for(int k = 0;k < 9;k++) {
-                if (t[board[x[i] + k/3][y[i] + k%3]] > 1) {
-                    red.insert(std::pair<std::pair<int, int>, bool>(std::pair<int, int>(x[i] + k/3, y[i] + k%3), true));
+                if (t[board[x[i] + k/3][y[j] + k%3]] > 1 || (t[board[x[i] + k/3][y[j] + k%3]] == 1 && board[x[i] + k/3][y[j] + k%3] == 0)) {
+                    red.insert(std::pair<std::pair<int, int>, bool>(std::pair<int, int>(x[i] + k/3, y[j] + k%3), true));
                 }
             }
             memset(t, 0, sizeof (t));

@@ -1,4 +1,4 @@
 md build
 cd .\build
-cmake -G "MinGW Makefiles" ..
+cmake ..
 cmake --build .
