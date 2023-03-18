@@ -7,6 +7,8 @@
 #include <string>
 #include <time.h>
 #include <map>
+#include <utility>
+#include <vector>
 
 #if _WIN32
 #define GetX(x) (2+4*x)
@@ -128,7 +130,7 @@ void CreateSudoku::get_input() {
     print_color(2,"^");
     int x = 0;
     int y = 0;
-    std::map<std::pair<int, int>, bool> red;
+    std::vector<std::pair<int, int>> errors;
     // #if !(_WIN32)
     //     linuxRead::linuxRead lread;
     //     lread.init_keyboard();
@@ -177,7 +179,7 @@ void CreateSudoku::get_input() {
                 std::cout << "Success" << std::endl;
                 return;
             } else {
-                red = getError();
+                errors = getError();
             }
             break;
         case 27: cls(); return;
@@ -224,18 +226,18 @@ void CreateSudoku::get_input() {
             print_color(0,board[now.y][now.x]);
         }
         // Highlight the wrong answers
-        if (!red.empty()) {
-            std::map<std::pair<int, int>, bool> ::iterator it;
-            std::map<std::pair<int, int>, bool> ::iterator itEnd;
-            it = red.begin();
-            itEnd = red.end();
+        if (!errors.empty()) {
+            std::vector<std::pair<int, int>> ::iterator it;
+            std::vector<std::pair<int, int>> ::iterator itEnd;
+            it = errors.begin();
+            itEnd = errors.end();
             while (it != itEnd) {
-                gotoxy(GetX(it->first.first),GetY(it->first.second));
+                gotoxy(GetX(it->second),GetY(it->first));
                 // print_color(1,board[it->first.first][it->first.second]);
-                print_color(1,board[it->first.second][it->first.first]);
+                print_color(1,board[it->first][it->second]);
                 it++;
             }
-            red.clear();
+            errors.clear();
         }
         // Describe current position
         gotoxy(GetX(x),GetY(y));
@@ -247,45 +249,57 @@ void CreateSudoku::get_input() {
     }
 }
 
-std::map<std::pair<int, int>, bool> CreateSudoku::getError() {
-    std::map<std::pair<int,int>, bool> red;
-    int t[10] = {0};
-    for(int i = 0;i < 9;i++) {
-        for(int j = 0;j < 9;j++) {
-            t[board[i][j]]++;
-        }
-        for(int j = 0;j < 9;j++) {
-            if (t[board[i][j]] > 1 || (t[board[i][j]] == 1 && board[i][j] == 0)) {
-                red.insert(std::pair<std::pair<int, int>, bool>(std::pair<int, int>(i, j), true));
+std::vector<std::pair<int, int> > CreateSudoku::getError() {
+    std::vector<std::pair<int, int>> errors;
+    int rows[9] = {0};      // 每行出现的数字情况
+    int cols[9] = {0};      // 每列出现的数字情况
+    int boxes[3][3] = {0};  // 每个 3x3 子框架出现的数字情况
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0; j < 9; ++j) {
+            if (board[i][j] == 0) {
+                continue;
             }
-        }
-        memset(t, 0, sizeof (t));
-    }
-    for(int i = 0;i < 9;i++) {
-        for(int j = 0;j < 9;j++) {
-            t[board[j][i]]++;
-        }
-        for(int j = 0;j < 9;j++) {
-            if (t[board[j][i]] > 1 || (t[board[j][i]] == 1 && board[j][i] == 0)) {
-                red.insert(std::pair<std::pair<int, int>, bool>(std::pair<int, int>(j, i), true));
-            }
-        }
-        memset(t, 0, sizeof (t));
-    }
-    int x[3] = {0,3,6};
-    int y[3] = {0,3,6};
-    for(int i = 0;i < 3;i++) {
-        for(int j = 0;j < 3;j++) {
-            for(int k = 0;k < 9;k++) {
-                t[board[x[i] + k/3][y[j] + k%3]]++;
-            }
-            for(int k = 0;k < 9;k++) {
-                if (t[board[x[i] + k/3][y[j] + k%3]] > 1 || (t[board[x[i] + k/3][y[j] + k%3]] == 1 && board[x[i] + k/3][y[j] + k%3] == 0)) {
-                    red.insert(std::pair<std::pair<int, int>, bool>(std::pair<int, int>(x[i] + k/3, y[j] + k%3), true));
+            int x = board[i][j];
+            if ((rows[i] >> (x-1)) & 1) {
+                // 数字 x 在当前行已经出现过
+                for (int k = 0; k < j; ++k) {
+                    if (board[i][k] == x) {
+                        errors.emplace_back(i, k);
+                        errors.emplace_back(i, j);
+                        break;
+                    }
                 }
+            } else {
+                rows[i] |= (1 << (x-1));  // 将数字 x 标记为已出现
             }
-            memset(t, 0, sizeof (t));
+            if ((cols[j] >> (x-1)) & 1) {
+                // 数字 x 在当前列已经出现过
+                for (int k = 0; k < i; ++k) {
+                    if (board[k][j] == x) {
+                        errors.emplace_back(k, j);
+                        errors.emplace_back(i, j);
+                        break;
+                    }
+                }
+            } else {
+                cols[j] |= (1 << (x-1));
+            }
+            if ((boxes[i/3][j/3] >> (x-1)) & 1) {
+                // 数字 x 在当前 3x3 子框架已经出现过
+                int r0 = i/3 * 3, c0 = j/3 * 3;
+                for (int r = r0; r < i; ++r) {
+                    for (int c = c0; c < j; ++c) {
+                        if (board[r][c] == x) {
+                            errors.emplace_back(r, c);
+                            errors.emplace_back(i, j);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                boxes[i/3][j/3] |= (1 << (x-1));
+            }
         }
     }
-    return red;
+    return errors;
 }

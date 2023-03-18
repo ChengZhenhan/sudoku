@@ -6,7 +6,7 @@
 int main(int argc, char const *argv[]) {
     CreateSudoku sudoku(argv[0]);
     sudoku.test = true;
-    std::map<std::pair<int, int>, bool> map = sudoku.getError();
+    std::vector<std::pair<int, int>> map = sudoku.getError();
     if (map.size() != 0) {
         return -1;
     }

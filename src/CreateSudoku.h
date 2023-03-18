@@ -90,7 +90,7 @@ public:
     bool judge();
     void get_input();
     bool checkput(int x, int y);
-    std::map<std::pair<int,int>,bool> getError();
+    std::vector<std::pair<int, int>> getError();
     // get_board
     int **get_board() {
         int **p = new int *[9];
