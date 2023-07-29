@@ -36,6 +36,7 @@ private:
     };
 public:
     bool test = false;
+    CreateSudoku() {}
     CreateSudoku(int difficulty)
     {
         zero = difficulty;
@@ -105,7 +106,7 @@ public:
         return p;
     }
 
-    void set_board(int **b) {
+    void set_board(int (*b)[9]) {
         for (int i = 0; i < 9; ++i) {
             for (int j = 0; j < 9; ++j) {
                 board[i][j] = b[i][j];

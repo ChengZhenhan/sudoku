@@ -250,7 +250,7 @@ void CreateSudoku::get_input() {
 }
 
 std::vector<std::pair<int, int> > CreateSudoku::getError() {
-    std::vector<std::pair<int, int>> errors;
+    std::vector<std::pair<int, int> > errors;
     int rows[9] = {0};      // 每行出现的数字情况
     int cols[9] = {0};      // 每列出现的数字情况
     int boxes[3][3] = {0};  // 每个 3x3 子框架出现的数字情况

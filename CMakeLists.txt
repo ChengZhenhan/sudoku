@@ -28,5 +28,5 @@ enable_testing()
 add_executable(getErrortest ${PROJECT_SOURCE_DIR}/test/getErrortest.cpp ${PROJECT_SOURCE_DIR}/src/CreateSudoku.h ${PROJECT_SOURCE_DIR}/src/CreateSudoku.cpp ${PROJECT_SOURCE_DIR}/src/Utils.h ${PROJECT_SOURCE_DIR}/src/Utils.cpp)
 add_executable(judgetest ${PROJECT_SOURCE_DIR}/test/judgetest.cpp ${PROJECT_SOURCE_DIR}/src/CreateSudoku.h ${PROJECT_SOURCE_DIR}/src/CreateSudoku.cpp ${PROJECT_SOURCE_DIR}/src/Utils.h ${PROJECT_SOURCE_DIR}/src/Utils.cpp)
 
-add_test( NAME getErrortest COMMAND getErrortest test.txt)
-add_test( NAME judgetest COMMAND judgetest test.txt 1)
+add_test( NAME getErrortest COMMAND getErrortest 1)
+add_test( NAME judgetest COMMAND judgetest )
