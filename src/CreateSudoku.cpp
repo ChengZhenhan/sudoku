@@ -151,7 +151,7 @@ void CreateSudoku::get_input() {
         ch = getch();
         bool out = false;
         switch (ch) {
-        case 'Q': case 'q': exit(0);
+        case 'Q': case 'q': return;
         case 'w': case 'W': if(y>0) { y--; } break;
         case 's': case 'S': if(y<8) { y++; } break;
         case 'a': case 'A': if(x>0) { x--; } break;
@@ -182,7 +182,7 @@ void CreateSudoku::get_input() {
                 errors = getError();
             }
             break;
-        case 27: cls(); return;
+        // case 27: cls(); return;
         default:
             out = true;
             break;
