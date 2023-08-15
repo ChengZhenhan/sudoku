@@ -49,7 +49,7 @@ void CreateSudoku::save(const std::string& filename) {
     out.close();
 }
 
-//It can also be exchanged by addition and subtraction
+// It can also be exchanged by addition and subtraction
 void CreateSudoku::turnrow(int row1, int row2) {
     int temp = 0;
     for(int i = 0;i < 9;i++) {
@@ -156,7 +156,7 @@ void CreateSudoku::get_input() {
         case 's': case 'S': if(y<8) { y++; } break;
         case 'a': case 'A': if(x>0) { x--; } break;
         case 'd': case 'D': if(x<8) { x++; } break;
-        case 'b': case 'B': 
+        case 'b': case 'B': case 'u': case 'U': 
         if(!s.empty()) {
             gotoxy(GetX(s.top().x),GetY(s.top().y));
             print_color(4,"0");
@@ -232,6 +232,10 @@ void CreateSudoku::get_input() {
             it = errors.begin();
             itEnd = errors.end();
             while (it != itEnd) {
+                // Mark only the numbers that players fill in themselves
+                if (puzzle[it->first][it->second] != 0) {
+                    continue;
+                }
                 gotoxy(GetX(it->second),GetY(it->first));
                 // print_color(1,board[it->first.first][it->first.second]);
                 print_color(1,board[it->first][it->second]);
@@ -245,7 +249,7 @@ void CreateSudoku::get_input() {
         gotoxy(GetX(x),1+GetY(y));
         print_color(2,"^");
         now.x = x;
-        now.y = y;//update "now"
+        now.y = y;//update the position
     }
 }
 

@@ -26,16 +26,19 @@ private:
         int y = 0;
     } Node;
     Node now;
-    std::stack<Node> s;
+    std::stack<Node> s; // 存储填充的数的顺序
     int zero = 0; // Number of steps
     struct History {
         int x,y;
         int num;
-//        int type;
+        int type;   // 1: 更改数字
+                    // 2: 回溯
 //        int change;
     };
 public:
     bool test = false;
+    int puzzle[9][9] = {0}; // 存储最开始的棋盘,可能会用到
+    std::vector<History> actionHistory();
     CreateSudoku() {}
     CreateSudoku(int difficulty)
     {
@@ -65,22 +68,35 @@ public:
             } else {
                 k--;
             }
-        }
+        } 
+        memcpy(puzzle, board, sizeof(board));
     }
 
     CreateSudoku(const std::string &filename)
     {
         memset(board, 0 ,sizeof(board));
         load(filename);
+        memcpy(puzzle, board, sizeof(board));
     }
 
     ~CreateSudoku()
     {
         if (!test) {
-            std::string filename;
-            std::cout << "Please input the filename: ";
-            std::cin >> filename;
-            save(filename);
+            while (true) {
+                std::cout << "Do you want to save the board? (yes(y)/no(n))?" << std::endl;
+                std::string choice;
+                std::cin >> choice;
+                if (choice == "yes" || choice == "y") {   
+                    std::string filename;
+                    std::cout << "Please input the filename: ";
+                    std::cin >> filename;
+                    save(filename);
+                } else if (choice == "no" || choice == "n") {
+                    exit(0);
+                } else {
+                    continue;
+                }
+            }
         }
     }
 

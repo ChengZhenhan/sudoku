@@ -5,6 +5,11 @@
 #include <cstring>
 #include <iostream>
 
+void help() {
+    std::cout << "Usage: ./Sudoku [filename]" << std::endl;
+    std::cout << "If no filename is given, the game will start automatically." << std::endl;
+}
+
 void play()
 {
     cls();
@@ -43,15 +48,13 @@ int main(int argc, char *argv[])
     if (argc == 1) {
         play();
     } else if (argc == 2 && !strcmp(argv[1], "-h")) {
-        std::cout << "Usage: ./Sudoku [filename]" << std::endl;
-        std::cout << "If no filename is given, the game will start automatically." << std::endl;
+        help();
         return 0;
     } else if (argc == 2) {
         play(argv[2]);
     } else {
-        std::cout << "Usage: ./Sudoku [filename]" << std::endl;
-        std::cout << "If no filename is given, the game will start automatically." << std::endl;
+        help();
     }
-    while (true) { }
+    // while (true) { }
     return 0;
 }
