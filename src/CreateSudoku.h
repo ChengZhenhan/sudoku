@@ -6,6 +6,7 @@
 #include <iostream>
 #include <stack>
 #include <time.h>
+#include <vector>
 
 class CreateSudoku {
 private:

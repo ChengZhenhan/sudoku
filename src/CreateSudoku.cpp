@@ -7,7 +7,6 @@
 #include <stack>
 #include <time.h>
 #include <utility>
-#include <vector>
 
 #if _WIN32
 #define GetX(x) (2+4*x)
