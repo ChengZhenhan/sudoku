@@ -7,6 +7,7 @@
 #include <stack>
 #include <time.h>
 #include <vector>
+#include "Utils.h"
 
 class CreateSudoku {
 private:
@@ -81,6 +82,7 @@ public:
     ~CreateSudoku()
     {
         if (!test) {
+            cls();
             while (true) {
                 std::cout << "Do you want to save the board? (yes(y)/no(n))?" << std::endl;
                 std::string choice;
