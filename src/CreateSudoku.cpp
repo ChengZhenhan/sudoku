@@ -3,10 +3,9 @@
 #include <fstream>
 #include <iostream>
 #include <cstring>
-#include <stack>
 #include <string>
+#include <stack>
 #include <time.h>
-#include <map>
 #include <utility>
 #include <vector>
 

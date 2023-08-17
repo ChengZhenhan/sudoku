@@ -5,7 +5,7 @@
 
 void draw::draw_board(int nx,int ny) {
     gotoxy(0, 0);
-    print_color(1,"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    print_color(1,"┏━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┓");
     std::cout << std::endl;
     int color;
     for(int i = 0;i < 9;i++) {
@@ -21,7 +21,11 @@ void draw::draw_board(int nx,int ny) {
         }
         std::cout << std::endl;
         color = (i+1)%3==0?1:0;
-        print_color(color,"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        if (i == 8) {
+            print_color(color,"┗━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┛");
+        } else {
+            print_color(color,"┣━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━┫");
+        }
         std::cout << std::endl;
     }
 }

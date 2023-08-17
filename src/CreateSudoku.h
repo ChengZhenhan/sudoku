@@ -1,13 +1,11 @@
 #ifndef _SUDO_CREATE_SUDOKU_H_
 #define _SUDO_CREATE_SUDOKU_H_
 
-#include "Utils.h"
 #include <cstring>
 #include <fstream>
 #include <iostream>
 #include <stack>
 #include <time.h>
-#include <map>
 
 class CreateSudoku {
 private:
