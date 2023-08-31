@@ -11,7 +11,7 @@ int testCreateSudoku(int t) {
     sudokuObj.test = true;
 
     // 测试用例1
-    int board1[9][9] = {
+    std::vector<std::vector<int>> board1 = {
         {0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -23,7 +23,7 @@ int testCreateSudoku(int t) {
         {0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
     // 测试用例2
-    int board2[9][9] = {
+    std::vector<std::vector<int>> board2 = {
         {5, 3, 0, 0, 7, 0, 0, 0, 0},
         {6, 0, 0, 1, 9, 5, 0, 0, 0},
         {0, 9, 8, 0, 0, 0, 0, 6, 0},
@@ -35,7 +35,7 @@ int testCreateSudoku(int t) {
         {0, 0, 0, 0, 8, 0, 0, 7, 9}
     };
     // 测试用例3
-    int board3[9][9] = {
+    std::vector<std::vector<int>> board3 = {
         {5, 3, 0, 0, 7, 0, 0, 0, 0},
         {6, 0, 0, 1, 9, 5, 0, 0, 0},
         {0, 9, 9, 0, 0, 0, 0, 6, 0},

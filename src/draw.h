@@ -3,25 +3,19 @@
 
 #include <iostream>
 #include <cstring>
+#include <vector>
 
 class draw
 {
 private:
-    int board[9][9];
+    std::vector<std::vector<int>> board;
 public:
     void draw_board(int nx,int ny);
-    draw(int **board) {
-        memset(this->board, 0, sizeof(this->board));
-        for(int i = 0;i < 9;i++) {
-            for(int j = 0;j < 9;j++) {
-                this->board[i][j] = board[i][j];
-            }
-        }
-        // memcpy(this->board, board, sizeof(board));
+    explicit draw(std::vector<std::vector<int>> board) {
+        this->board = board;
     }
     ~draw()
-    {
-    }
+    = default;
 };
 
 #endif

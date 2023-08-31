@@ -49,9 +49,8 @@ int main(int argc, char *argv[])
         play();
     } else if (argc == 2 && !strcmp(argv[1], "-h")) {
         help();
-        return 0;
     } else if (argc == 2) {
-        play(argv[2]);
+        play(argv[1]);
     } else {
         help();
     }

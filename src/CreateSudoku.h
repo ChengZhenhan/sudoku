@@ -5,13 +5,13 @@
 #include <fstream>
 #include <iostream>
 #include <stack>
-#include <time.h>
+#include <random>
 #include <vector>
 #include "Utils.h"
 
 class CreateSudoku {
 private:
-    int board[9][9] = { { 9, 7, 2, 8, 5, 3, 6, 1, 4 },
+    std::vector<std::vector<int>> board { { 9, 7, 2, 8, 5, 3, 6, 1, 4 },
                         { 1, 4, 6, 2, 7, 9, 5, 3, 8 },
                         { 5, 8, 3, 1, 4, 6, 7, 2, 9 },
                         { 6, 2, 4, 7, 1, 8, 9, 5, 3 },
@@ -21,6 +21,7 @@ private:
                         { 2, 6, 5, 9, 3, 4, 1, 8, 7 },
                         { 4, 3, 1, 5, 8, 7, 2, 9, 6 } };
 
+    // int board[9][9] =
     typedef struct Node {
         int x = 0;
         int y = 0;
@@ -37,46 +38,52 @@ private:
     };
 public:
     bool test = false;
-    int puzzle[9][9] = {0}; // 存储最开始的棋盘,可能会用到
-    std::vector<History> actionHistory();
+    std::string filename;
+    std::vector<std::vector<int>> puzzle;   // 存储最开始的棋盘,可能会用到
+    std::vector<History> actionHistory;
+
     CreateSudoku() {}
     CreateSudoku(int difficulty)
     {
         zero = difficulty;
-        srand(time(NULL));
-        int i = rand() % 99 + 15;
-        int j = rand() % 99 + 15;
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dist1(15,99);
+        std::uniform_int_distribution<> dist2(0,8);
+        int i = dist1(gen);
+        int j = dist1(gen);
         int rand1;
         int rand2;
         for (int k = 0; k < i; k++) {
             for (int l = 0; l < j; l++) {
-                rand1 = (rand() % 3 + 1) * (rand() % 3 + 1) - 1;
-                rand2 = rand1 / 3 * 3 + rand() % 3;
+                rand1 = dist2(gen);
+                rand2 = dist2(gen);
                 turnrow(rand1, rand2);
                 turncol(rand1, rand2);
-                rand1 = (rand() % 3 + 1) * (rand() % 3 + 1) - 1;
-                rand2 = rand1 / 3 * 3 + rand() % 3;
+                rand1 = dist2(gen);
+                rand2 = dist2(gen);
                 turncol(rand1, rand2);
                 turnrow(rand1, rand2);
             }
         }
         for (int k = 0; k < difficulty; k++) {
-            int a = rand() % 9;
-            int b = rand() % 9;
+            int a = dist2(gen);
+            int b = dist2(gen);
             if (board[a][b] != 0) {
                 board[a][b] = 0;
             } else {
                 k--;
             }
-        } 
-        memcpy(puzzle, board, sizeof(board));
+        }
+        puzzle = board;
     }
 
     CreateSudoku(const std::string &filename)
     {
-        memset(board, 0 ,sizeof(board));
+        this->filename = filename;
+        board = std::vector<std::vector<int>> (9, std::vector<int> (9));
         load(filename);
-        memcpy(puzzle, board, sizeof(board));
+        puzzle = board;
     }
 
     ~CreateSudoku()
@@ -87,11 +94,15 @@ public:
                 std::cout << "Do you want to save the board? (yes(y)/no(n))?" << std::endl;
                 std::string choice;
                 std::cin >> choice;
-                if (choice == "yes" || choice == "y") {   
-                    std::string filename;
+                if (choice == "yes" || choice == "y") {
+                    if (!filename.empty()) {
+                        save(filename);
+                        exit(0);
+                    }
                     std::cout << "Please input the filename: ";
                     std::cin >> filename;
                     save(filename);
+                    exit(0);
                 } else if (choice == "no" || choice == "n") {
                     exit(0);
                 } else {
@@ -110,25 +121,12 @@ public:
     bool checkput(int x, int y);
     std::vector<std::pair<int, int>> getError();
     // get_board
-    int **get_board() {
-        int **p = new int *[9];
-        for (int i = 0; i < 9; i++) {
-            p[i] = new int[9];
-        }
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                p[i][j] = board[i][j];
-            }
-        }
-        return p;
+    std::vector<std::vector<int>> get_board() {
+        return board;
     }
 
-    void set_board(int (*b)[9]) {
-        for (int i = 0; i < 9; ++i) {
-            for (int j = 0; j < 9; ++j) {
-                board[i][j] = b[i][j];
-            }
-        }
+    void set_board(std::vector<std::vector<int>> b) {
+        board = b;
     }
 };
 
