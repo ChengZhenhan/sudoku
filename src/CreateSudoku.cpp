@@ -29,6 +29,12 @@ void CreateSudoku::load(const std::string& filename) {
             }
         }
     }
+    std::stack<Node> tmp;
+    while (!in.eof()) {
+        Node t;
+        in >> t.x >> t.y;
+        tmp.push(t);
+    }
     in.close();
 }
 
@@ -44,17 +50,22 @@ void CreateSudoku::save(const std::string& filename) {
         }
         out << std::endl;
     }
+    while (!s.empty()) {
+        out << s.top().x << " " << s.top().y << std::endl;
+        s.pop();
+    }
     out.close();
 }
 
 // It can also be exchanged by addition and subtraction
 void CreateSudoku::turnrow(int row1, int row2) {
-    int temp = 0;
-    for(int i = 0;i < 9;i++) {
-        temp = board[row1][i];
-        board[row1][i] = board[row2][i];
-        board[row2][i] = temp;
-    }
+    // int temp = 0;
+    // for(int i = 0;i < 9;i++) {
+    //     temp = board[row1][i];
+    //     board[row1][i] = board[row2][i];
+    //     board[row2][i] = temp;
+    // }
+    std::swap(board[row1], board[row2]);
 }
 
 void CreateSudoku::turncol(int col1, int col2) {
